@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+# Launch any installed app via wofi's app list; it opens on the current workspace.
+set -euo pipefail
+
+exec wofi --show drun \
+	--conf "$HOME/.config/wofi/config" \
+	--style "$HOME/.config/wofi/style.css" \
+	--prompt "Search apps"

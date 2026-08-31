@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+# Toggle the waybar bar on/off.
+set -euo pipefail
+
+if pgrep -x waybar >/dev/null; then
+    pkill -x waybar
+else
+    setsid waybar >/dev/null 2>&1 &
+    disown
+fi

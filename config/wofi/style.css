@@ -1,0 +1,81 @@
+/* Mechabar companion menu - catppuccin mocha, black/blue */
+
+* {
+	font-family: "CommitMono Nerd Font", monospace;
+	font-size: 13px;
+	border: none;
+	outline: none;
+}
+
+window {
+	background-color: transparent;
+}
+
+#outer-box {
+	margin: 0;
+	padding: 12px;
+	border: 1px solid #1b2540;
+	border-radius: 14px;
+	background-color: rgba(9, 9, 15, 0.96);
+}
+
+#input {
+	margin: 0 0 10px 0;
+	padding: 9px 14px;
+	border: 1px solid #182238;
+	border-radius: 10px;
+	background-color: #101019;
+	color: #cdd6f4;
+	caret-color: #89b4fa;
+}
+#input:focus {
+	border: 1px solid #89b4fa;
+}
+#input image {
+	color: #89b4fa;
+}
+
+#scroll {
+	margin: 0;
+	padding: 0;
+}
+
+#inner-box {
+	margin: 0;
+	padding: 0;
+	background-color: transparent;
+}
+
+#entry {
+	margin: 1px 0;
+	padding: 8px 12px;
+	border-radius: 10px;
+	background-color: transparent;
+	color: #a6adc8;
+}
+
+#entry:selected,
+#entry:hover {
+	background-color: rgba(137, 180, 250, 0.10);
+	color: #cdd6f4;
+	box-shadow: inset 3px 0 0 0 #89b4fa;
+}
+
+#entry image {
+	margin-right: 12px;
+	-gtk-icon-transform: scale(0.95);
+}
+
+#text {
+	color: inherit;
+}
+#text:selected {
+	color: #cdd6f4;
+}
+
+#unselected {
+	color: #a6adc8;
+}
+#selected {
+	color: #89b4fa;
+}

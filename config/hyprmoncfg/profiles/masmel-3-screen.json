@@ -1,0 +1,146 @@
+{
+  "name": "masmel-3-screen",
+  "created_at": "2026-08-31T05:50:34.462292315Z",
+  "updated_at": "2026-08-31T08:17:32.279074442Z",
+  "outputs": [
+    {
+      "key": "acer technologies|kg271|tf5ee0048511",
+      "match_key": "acer technologies|kg271|tf5ee0048511",
+      "name": "HDMI-A-1",
+      "description": "Acer Technologies KG271 TF5EE0048511",
+      "make": "Acer Technologies",
+      "model": "KG271",
+      "serial": "TF5EE0048511",
+      "enabled": true,
+      "mode": "1920x1080@60.00Hz",
+      "width": 1920,
+      "height": 1080,
+      "refresh": 60,
+      "x": 1070,
+      "y": -1514,
+      "scale": 1,
+      "transform": 0,
+      "bitdepth": 8,
+      "cm": "srgb",
+      "sdr_brightness": 1,
+      "sdr_saturation": 1,
+      "sdr_min_luminance": 0.2,
+      "sdr_max_luminance": 80,
+      "min_luminance": 0
+    },
+    {
+      "key": "lg display|0x0706",
+      "match_key": "lg display|0x0706",
+      "name": "eDP-1",
+      "description": "LG Display 0x0706",
+      "make": "LG Display",
+      "model": "0x0706",
+      "enabled": true,
+      "mode": "1920x1080@60.02Hz",
+      "width": 1920,
+      "height": 1080,
+      "refresh": 60.02,
+      "x": 1020,
+      "y": 0,
+      "scale": 1,
+      "transform": 0,
+      "bitdepth": 8,
+      "cm": "srgb",
+      "sdr_brightness": 1,
+      "sdr_saturation": 1,
+      "sdr_min_luminance": 0.2,
+      "sdr_max_luminance": 80,
+      "min_luminance": 0
+    },
+    {
+      "key": "lg electronics|16mr70|603nzud076974",
+      "match_key": "lg electronics|16mr70|603nzud076974",
+      "name": "DP-2",
+      "description": "LG Electronics 16MR70 603NZUD076974",
+      "make": "LG Electronics",
+      "model": "16MR70",
+      "serial": "603NZUD076974",
+      "enabled": true,
+      "mode": "2560x1600@59.97Hz",
+      "width": 2560,
+      "height": 1600,
+      "refresh": 59.97,
+      "x": -580,
+      "y": -1434,
+      "scale": 1.6,
+      "transform": 0,
+      "bitdepth": 8,
+      "cm": "srgb",
+      "sdr_brightness": 1,
+      "sdr_saturation": 1,
+      "sdr_min_luminance": 0.2,
+      "sdr_max_luminance": 80,
+      "min_luminance": 0
+    }
+  ],
+  "workspaces": {
+    "enabled": true,
+    "strategy": "sequential",
+    "max_workspaces": 9,
+    "group_size": 3,
+    "monitor_order": [
+      "lg display|0x0706",
+      "lg electronics|16mr70|603nzud076974",
+      "acer technologies|kg271|tf5ee0048511"
+    ],
+    "rules": [
+      {
+        "workspace": "1",
+        "output_key": "lg display|0x0706",
+        "output_name": "eDP-1",
+        "default": true,
+        "persistent": true
+      },
+      {
+        "workspace": "2",
+        "output_key": "lg display|0x0706",
+        "output_name": "eDP-1"
+      },
+      {
+        "workspace": "3",
+        "output_key": "lg display|0x0706",
+        "output_name": "eDP-1"
+      },
+      {
+        "workspace": "4",
+        "output_key": "lg electronics|16mr70|603nzud076974",
+        "output_name": "DP-2",
+        "default": true,
+        "persistent": true
+      },
+      {
+        "workspace": "5",
+        "output_key": "lg electronics|16mr70|603nzud076974",
+        "output_name": "DP-2"
+      },
+      {
+        "workspace": "6",
+        "output_key": "lg electronics|16mr70|603nzud076974",
+        "output_name": "DP-2"
+      },
+      {
+        "workspace": "7",
+        "output_key": "acer technologies|kg271|tf5ee0048511",
+        "output_name": "HDMI-A-1",
+        "default": true,
+        "persistent": true
+      },
+      {
+        "workspace": "8",
+        "output_key": "acer technologies|kg271|tf5ee0048511",
+        "output_name": "HDMI-A-1"
+      },
+      {
+        "workspace": "9",
+        "output_key": "acer technologies|kg271|tf5ee0048511",
+        "output_name": "HDMI-A-1"
+      }
+    ]
+  },
+  "exec": ""
+}

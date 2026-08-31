@@ -1,0 +1,7 @@
+{
+	"custom/power": {
+		"format": "󰤄",
+		"on-click": "~/.local/bin/hypr-power-menu",
+		"tooltip-format": "Power Menu"
+	}
+}

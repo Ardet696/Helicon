@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+# Minimal wofi power menu, styled to match mechabar.
+set -euo pipefail
+
+entries="\
+󰌾   Lock
+󰗽   Logout
+󰤄   Suspend
+󰋊   Hibernate
+󰜉   Reboot
+󰐥   Shutdown"
+
+selected=$(printf '%s\n' "$entries" | wofi \
+	--dmenu \
+	--conf "$HOME/.config/wofi/power.conf" \
+	--style "$HOME/.config/wofi/power.css" \
+	--cache-file /dev/null)
+
+case "${selected##*[[:space:]]}" in
+	Lock)      loginctl lock-session ;;
+	Logout)    loginctl terminate-session "${XDG_SESSION_ID:-self}" ;;
+	Suspend)   systemctl suspend ;;
+	Hibernate) systemctl hibernate ;;
+	Reboot)    systemctl reboot ;;
+	Shutdown)  systemctl poweroff ;;
+	*)         exit 0 ;;
+esac

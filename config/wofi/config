@@ -1,0 +1,15 @@
+allow_images=true
+allow_markup=true
+image_size=28
+insensitive=true
+no_actions=true
+prompt=Search
+hide_scroll=true
+term=kitty
+key_expand=Tab
+matching=fuzzy
+width=560
+height=420
+lines=9
+columns=1
+location=center

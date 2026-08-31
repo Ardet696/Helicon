@@ -1,0 +1,58 @@
+/* Power menu - compact, black/blue */
+
+* {
+	font-family: "CommitMono Nerd Font", monospace;
+	font-size: 13px;
+	border: none;
+	outline: none;
+}
+
+window {
+	background-color: transparent;
+}
+
+#outer-box {
+	padding: 10px;
+	border: 1px solid #1b2540;
+	border-radius: 16px;
+	background-color: rgba(9, 9, 15, 0.97);
+}
+
+#input {
+	margin: 0 0 8px 0;
+	padding: 7px 12px;
+	border: 1px solid #182238;
+	border-radius: 10px;
+	background-color: #101019;
+	color: #6c7086;
+	caret-color: #89b4fa;
+	font-size: 12px;
+}
+#input:focus {
+	border: 1px solid #89b4fa;
+	color: #cdd6f4;
+}
+
+#inner-box,
+#scroll {
+	background-color: transparent;
+}
+
+#entry {
+	margin: 1px 0;
+	padding: 9px 14px;
+	border-radius: 10px;
+	background-color: transparent;
+	color: #a6adc8;
+}
+
+#entry:selected,
+#entry:hover {
+	background-color: rgba(137, 180, 250, 0.12);
+	color: #89b4fa;
+	box-shadow: inset 3px 0 0 0 #89b4fa;
+}
+
+#text {
+	color: inherit;
+}

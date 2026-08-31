@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+# Smoothly fade the backlight down to ~10%, saving the current level first.
+set -euo pipefail
+
+brightnessctl -q -s
+cur=$(brightnessctl g)
+max=$(brightnessctl m)
+target=$(( max / 10 ))
+[ "$cur" -le "$target" ] && exit 0
+
+steps=25
+for i in $(seq 1 "$steps"); do
+    brightnessctl -q s "$(( cur - (cur - target) * i / steps ))"
+    sleep 0.04
+done

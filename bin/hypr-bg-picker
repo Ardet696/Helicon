@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+# Pick a wallpaper from ~/Pictures/Wallpapers via wofi and apply it.
+set -euo pipefail
+
+WALLPAPER_DIR="$HOME/Pictures/Wallpapers"
+
+mapfile -t files < <(find "$WALLPAPER_DIR" -maxdepth 1 -type f \
+    \( -iname "*.png" -o -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.webp" -o -iname "*.bmp" \) \
+    | sort)
+
+if [[ ${#files[@]} -eq 0 ]]; then
+    notify-send "Wallpaper picker" "No images found in $WALLPAPER_DIR"
+    exit 0
+fi
+
+selected=$(
+    for f in "${files[@]}"; do
+        printf '%s\0icon\x1f%s\n' "$(basename "$f")" "$f"
+    done | wofi --show dmenu --allow-images --prompt "Wallpaper"
+)
+
+[[ -z "$selected" ]] && exit 0
+
+"$HOME/.local/bin/hypr-bg-set" "$WALLPAPER_DIR/$selected"
