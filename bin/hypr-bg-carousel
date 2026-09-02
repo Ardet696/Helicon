@@ -1,0 +1,147 @@
+#!/usr/bin/env python3
+"""Wallpaper carousel: left/right to browse, Enter to apply, Esc to cancel."""
+
+import os
+import subprocess
+import sys
+
+import gi
+
+gi.require_version("Gtk", "4.0")
+gi.require_version("Gdk", "4.0")
+from gi.repository import Gdk, Gtk  # noqa: E402
+
+HOME = os.path.expanduser("~")
+WALLPAPER_DIR = os.path.join(HOME, "Pictures", "Wallpapers")
+CURRENT_LINK = os.path.join(HOME, ".local/state/hypr/current-background")
+BG_SET = os.path.join(HOME, ".local/bin/hypr-bg-set")
+EXTS = (".png", ".jpg", ".jpeg", ".webp", ".bmp")
+
+CSS = b"""
+window { background-color: transparent; }
+#frame {
+    padding: 14px;
+    border: 1px solid #1b2540;
+    border-radius: 16px;
+    background-color: rgba(9, 9, 15, 0.97);
+}
+#preview { border-radius: 10px; background-color: #101019; }
+#name {
+    font-family: "CommitMono Nerd Font", monospace;
+    font-size: 13px;
+    color: #cdd6f4;
+    margin-top: 10px;
+}
+#count {
+    font-family: "CommitMono Nerd Font", monospace;
+    font-size: 11px;
+    color: #6c7086;
+    margin-top: 2px;
+}
+#hint {
+    font-family: "CommitMono Nerd Font", monospace;
+    font-size: 11px;
+    color: #45475a;
+    margin-top: 8px;
+}
+"""
+
+PREVIEW_W, PREVIEW_H = 960, 540
+
+
+def wallpapers():
+    if not os.path.isdir(WALLPAPER_DIR):
+        return []
+    names = [f for f in os.listdir(WALLPAPER_DIR) if f.lower().endswith(EXTS)]
+    return sorted(os.path.join(WALLPAPER_DIR, f) for f in names)
+
+
+def current_index(files):
+    try:
+        cur = os.path.realpath(CURRENT_LINK)
+    except OSError:
+        return 0
+    return files.index(cur) if cur in files else 0
+
+
+class Carousel(Gtk.ApplicationWindow):
+    def __init__(self, app, files, index):
+        super().__init__(application=app, title="Wallpaper")
+        self.files = files
+        self.index = index
+
+        self.set_default_size(PREVIEW_W + 28, PREVIEW_H + 100)
+        self.set_resizable(False)
+
+        self.picture = Gtk.Picture(name="preview")
+        self.picture.set_size_request(PREVIEW_W, PREVIEW_H)
+        self.picture.set_content_fit(Gtk.ContentFit.COVER)
+
+        self.name_label = Gtk.Label(name="name")
+        self.name_label.set_ellipsize(3)
+        self.count_label = Gtk.Label(name="count")
+        hint = Gtk.Label(name="hint", label="← →  browse    Enter  apply    Esc  cancel")
+
+        box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, name="frame")
+        box.append(self.picture)
+        box.append(self.name_label)
+        box.append(self.count_label)
+        box.append(hint)
+        self.set_child(box)
+
+        keys = Gtk.EventControllerKey()
+        keys.connect("key-pressed", self.on_key)
+        self.add_controller(keys)
+
+        self.refresh()
+
+    def refresh(self):
+        path = self.files[self.index]
+        try:
+            self.picture.set_paintable(Gdk.Texture.new_from_filename(path))
+        except Exception:
+            self.picture.set_filename(path)
+        self.name_label.set_text(os.path.basename(path))
+        self.count_label.set_text(f"{self.index + 1} / {len(self.files)}")
+
+    def on_key(self, _controller, keyval, _keycode, _state):
+        if keyval in (Gdk.KEY_Left, Gdk.KEY_h):
+            self.index = (self.index - 1) % len(self.files)
+            self.refresh()
+        elif keyval in (Gdk.KEY_Right, Gdk.KEY_l):
+            self.index = (self.index + 1) % len(self.files)
+            self.refresh()
+        elif keyval in (Gdk.KEY_Return, Gdk.KEY_KP_Enter):
+            subprocess.Popen([BG_SET, self.files[self.index]])
+            self.close()
+        elif keyval in (Gdk.KEY_Escape, Gdk.KEY_q):
+            self.close()
+        else:
+            return False
+        return True
+
+
+def main():
+    files = wallpapers()
+    if not files:
+        subprocess.run(
+            ["notify-send", "Wallpaper", f"No images found in {WALLPAPER_DIR}"]
+        )
+        return 0
+
+    app = Gtk.Application(application_id="dev.vik.hyprbgcarousel")
+
+    def activate(a):
+        provider = Gtk.CssProvider()
+        provider.load_from_data(CSS)
+        Gtk.StyleContext.add_provider_for_display(
+            Gdk.Display.get_default(), provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION
+        )
+        Carousel(a, files, current_index(files)).present()
+
+    app.connect("activate", activate)
+    return app.run([])
+
+
+if __name__ == "__main__":
+    sys.exit(main())

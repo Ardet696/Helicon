@@ -15,7 +15,7 @@ Arch Linux + Hyprland rice. Catppuccin Mocha base, near-black panels, blue accen
 | `config/hyprmoncfg` | Monitor profiles |
 | `config/gtk-3.0` | GTK bits |
 | `config/starship.toml` | Prompt |
-| `bin/` | `hypr-*` helper scripts (app manager, power menu, wallpaper picker, screenshot OCR, waybar toggle, dim ramp) |
+| `bin/` | `hypr-*` helper scripts (app manager, power menu, wallpaper picker, screenshot OCR, waybar toggle, dim ramp) and `hypr-bg-carousel` (GTK4 wallpaper carousel) |
 
 ## Install
 
@@ -48,16 +48,18 @@ git clone <repo> ~/Projects/Helicon
 | `SUPER + W` | Close window |
 | `SUPER + E` | File manager |
 | `SUPER + L` | Lock |
-| `SUPER + CTRL + W` | Wallpaper picker |
+| `SUPER + CTRL + W` | Wallpaper picker (wofi list) |
+| `SUPER + CTRL + Space` | Wallpaper carousel (arrows browse, Enter applies) |
+| `SUPER + ALT + Space` | Power menu |
 | `SUPER + SHIFT + Space` | Toggle waybar |
 | `SUPER + SHIFT + S` | Region screenshot to satty |
 | `SUPER + CTRL + Print` | Screenshot OCR |
 
-Power menu: click the waybar power icon, or run `hypr-power-menu`.
+Power menu: `SUPER + ALT + Space`, the waybar power icon, or `hypr-power-menu`.
 
 ## Dependencies
 
-`hyprland hyprlock hypridle waybar wofi kitty mako btop starship grim slurp satty wl-clipboard` plus a Nerd Font (`CommitMono Nerd Font`).
+`hyprland hyprlock hypridle waybar wofi kitty mako btop starship grim slurp satty wl-clipboard swaybg python-gobject gtk4` plus a Nerd Font (`CommitMono Nerd Font`).
 
 ## Credit
 

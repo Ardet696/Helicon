@@ -277,6 +277,8 @@ hl.bind(mainMod .. " + SHIFT + B", hl.dsp.exec_cmd("firefox"))
 hl.bind(mainMod .. " + V", hl.dsp.window.float({ action = "toggle" }))
 hl.bind(mainMod .. " + space", hl.dsp.exec_cmd("/home/vik/.local/bin/hypr-app-manager"))
 hl.bind(mainMod .. " + SHIFT + space", hl.dsp.exec_cmd("/home/vik/.local/bin/hypr-waybar-toggle"))
+hl.bind(mainMod .. " + ALT + space", hl.dsp.exec_cmd("/home/vik/.local/bin/hypr-power-menu"))
+hl.bind(mainMod .. " + CTRL + space", hl.dsp.exec_cmd("/home/vik/.local/bin/hypr-bg-carousel"))
 hl.bind(mainMod .. " + CTRL + W", hl.dsp.exec_cmd("/home/vik/.local/bin/hypr-bg-picker"))
 hl.bind(mainMod .. " + P", hl.dsp.window.pseudo())
 hl.bind(mainMod .. " + J", hl.dsp.layout("togglesplit"))    -- dwindle only
@@ -379,6 +381,15 @@ hl.window_rule({
 --     no_anim = true,
 -- })
 -- overlayLayerRule:set_enabled(false)
+
+-- Wallpaper carousel popup
+hl.window_rule({
+    name  = "float-bg-carousel",
+    match = { class = "dev.vik.hyprbgcarousel" },
+
+    float  = true,
+    center = true,
+})
 
 -- Hyprland-run windowrule
 hl.window_rule({
