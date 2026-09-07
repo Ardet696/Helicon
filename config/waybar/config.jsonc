@@ -16,7 +16,11 @@
 	],
 
 	"modules-left": [
-		"custom/user"
+		"custom/user",
+
+		"custom/left#bg-1",
+		"hyprland/workspaces",
+		"custom/right#bg-1"
 	],
 
 	"modules-center": [
