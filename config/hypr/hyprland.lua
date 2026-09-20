@@ -288,9 +288,10 @@ hl.bind(mainMod .. " + F", hl.dsp.window.fullscreen({ action = "toggle" }))
 hl.bind(mainMod .. " + L", hl.dsp.exec_cmd("hyprlock"))
 
 -- Screenshots (grim + slurp + satty)
-hl.bind("Print", hl.dsp.exec_cmd("grim ~/Pictures/Screenshots/$(date +%Y%m%d-%H%M%S).png && notify-send 'Screenshot saved'"))
-hl.bind(mainMod .. " + SHIFT + S", hl.dsp.exec_cmd("grim -g \"$(slurp)\" - | satty --filename - --output-filename ~/Pictures/Screenshots/%Y%m%d-%H%M%S.png --copy-command wl-copy"))
-hl.bind(mainMod .. " + CTRL + Print", hl.dsp.exec_cmd("/home/vik/.local/bin/hypr-screenshot-ocr"))
+hl.bind("Print", hl.dsp.exec_cmd("/home/vik/.local/bin/hypr-screenshot output"))
+hl.bind(mainMod .. " + SHIFT + S", hl.dsp.exec_cmd("/home/vik/.local/bin/hypr-screenshot region"))
+hl.bind(mainMod .. " + CTRL + Print", hl.dsp.exec_cmd("/home/vik/.local/bin/hypr-screenshot region"))
+hl.bind(mainMod .. " + CTRL + SHIFT + Print", hl.dsp.exec_cmd("/home/vik/.local/bin/hypr-screenshot-ocr"))
 
 -- Notifications (mako)
 hl.bind(mainMod .. " + comma", hl.dsp.exec_cmd("makoctl dismiss"))

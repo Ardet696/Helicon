@@ -1,0 +1,103 @@
+{
+  "name": "tetuan-1monitor",
+  "created_at": "2026-09-04T09:21:13.262486886Z",
+  "updated_at": "2026-09-04T09:21:13.272161708Z",
+  "outputs": [
+    {
+      "key": "lg display|0x0706",
+      "match_key": "lg display|0x0706",
+      "name": "eDP-1",
+      "description": "LG Display 0x0706",
+      "make": "LG Display",
+      "model": "0x0706",
+      "enabled": true,
+      "mode": "1920x1080@60.02Hz",
+      "width": 1920,
+      "height": 1080,
+      "refresh": 60.02,
+      "x": 1070,
+      "y": -338,
+      "scale": 1,
+      "transform": 0,
+      "bitdepth": 8,
+      "cm": "srgb",
+      "sdr_brightness": 1,
+      "sdr_saturation": 1,
+      "sdr_min_luminance": 0.2,
+      "sdr_max_luminance": 80,
+      "min_luminance": 0
+    },
+    {
+      "key": "microstep|msi g2412f|bb9t054202601",
+      "match_key": "microstep|msi g2412f|bb9t054202601",
+      "name": "HDMI-A-1",
+      "description": "Microstep MSI G2412F BB9T054202601",
+      "make": "Microstep",
+      "model": "MSI G2412F",
+      "serial": "BB9T054202601",
+      "enabled": true,
+      "mode": "1920x1080@60.00Hz",
+      "width": 1920,
+      "height": 1080,
+      "refresh": 60,
+      "x": 1070,
+      "y": -1514,
+      "scale": 1,
+      "transform": 0,
+      "bitdepth": 8,
+      "cm": "srgb",
+      "sdr_brightness": 1,
+      "sdr_saturation": 1,
+      "sdr_min_luminance": 0.2,
+      "sdr_max_luminance": 80,
+      "min_luminance": 0
+    }
+  ],
+  "workspaces": {
+    "enabled": true,
+    "strategy": "sequential",
+    "max_workspaces": 6,
+    "group_size": 3,
+    "monitor_order": [
+      "lg display|0x0706",
+      "microstep|msi g2412f|bb9t054202601"
+    ],
+    "rules": [
+      {
+        "workspace": "1",
+        "output_key": "lg display|0x0706",
+        "output_name": "eDP-1",
+        "default": true,
+        "persistent": true
+      },
+      {
+        "workspace": "2",
+        "output_key": "lg display|0x0706",
+        "output_name": "eDP-1"
+      },
+      {
+        "workspace": "3",
+        "output_key": "lg display|0x0706",
+        "output_name": "eDP-1"
+      },
+      {
+        "workspace": "4",
+        "output_key": "microstep|msi g2412f|bb9t054202601",
+        "output_name": "HDMI-A-1",
+        "default": true,
+        "persistent": true
+      },
+      {
+        "workspace": "5",
+        "output_key": "microstep|msi g2412f|bb9t054202601",
+        "output_name": "HDMI-A-1"
+      },
+      {
+        "workspace": "6",
+        "output_key": "microstep|msi g2412f|bb9t054202601",
+        "output_name": "HDMI-A-1"
+      }
+    ]
+  },
+  "exec": ""
+}

@@ -1,0 +1,49 @@
+#!/usr/bin/env bash
+# Region/monitor screenshot -> satty -> PNG on clipboard + saved to disk.
+# Based on omarchy's bin/omarchy-cmd-screenshot.
+set -euo pipefail
+
+MODE="${1:-region}"
+OUT="$HOME/Pictures/Screenshots/screenshot-$(date +'%Y-%m-%d_%H-%M-%S').png"
+mkdir -p "$HOME/Pictures/Screenshots"
+
+# A second keypress while a selection is pending just cancels it.
+pkill slurp && exit 0
+
+case "$MODE" in
+region)
+    cleanup_freeze() { [[ -n "${PID:-}" ]] && kill "$PID" 2>/dev/null; }
+    trap cleanup_freeze EXIT
+    hyprpicker -r -z >/dev/null 2>&1 &
+    PID=$!
+    sleep .1
+    SELECTION=$(slurp 2>/dev/null) || exit 0
+    [[ -z "$SELECTION" ]] && exit 0
+    GRIM_ARGS=(-g "$SELECTION")
+    ;;
+output)
+    GRIM_ARGS=(-o "$(hyprctl activeworkspace -j | jq -r '.monitor')")
+    ;;
+*)
+    echo "usage: ${0##*/} [region|output]" >&2
+    exit 1
+    ;;
+esac
+
+if [[ "$MODE" == "region" ]]; then
+    # Copy the raw selection to the clipboard immediately, before satty opens,
+    # so it's pasteable right away even if you never touch the editor.
+    grim "${GRIM_ARGS[@]}" - | tee >(wl-copy --type image/png >/dev/null) | satty --filename - \
+        --output-filename "$OUT" \
+        --early-exit \
+        --actions-on-enter save-to-clipboard \
+        --save-after-copy \
+        --copy-command wl-copy
+else
+    grim "${GRIM_ARGS[@]}" - | satty --filename - \
+        --output-filename "$OUT" \
+        --early-exit \
+        --actions-on-enter save-to-clipboard \
+        --save-after-copy \
+        --copy-command wl-copy
+fi

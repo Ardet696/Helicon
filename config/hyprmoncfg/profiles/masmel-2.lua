@@ -18,18 +18,11 @@ hl.monitor({
   sdr_max_luminance = 80,
 })
 
-hl.monitor({
-  output = "desc:LG Electronics 16MR70 603NZUD076974",
-  mode = "2560x1600@59.97",
-  position = "-674x-606",
-  scale = 1.6,
-  sdr_min_luminance = 0.2,
-  sdr_max_luminance = 80,
-})
-
 hl.workspace_rule({ workspace = "1", monitor = "desc:LG Display 0x0706", default = true, persistent = true })
 hl.workspace_rule({ workspace = "2", monitor = "desc:LG Display 0x0706" })
 hl.workspace_rule({ workspace = "3", monitor = "desc:LG Display 0x0706" })
-hl.workspace_rule({ workspace = "7", monitor = "desc:LG Electronics 16MR70 603NZUD076974", default = true, persistent = true })
-hl.workspace_rule({ workspace = "8", monitor = "desc:LG Electronics 16MR70 603NZUD076974" })
-hl.workspace_rule({ workspace = "9", monitor = "desc:LG Electronics 16MR70 603NZUD076974" })
+hl.workspace_rule({ workspace = "4", monitor = "desc:LG Display 0x0706" })
+hl.workspace_rule({ workspace = "5", monitor = "desc:Acer Technologies KG271 TF5EE0048511", default = true, persistent = true })
+hl.workspace_rule({ workspace = "6", monitor = "desc:Acer Technologies KG271 TF5EE0048511" })
+hl.workspace_rule({ workspace = "7", monitor = "desc:Acer Technologies KG271 TF5EE0048511" })
+hl.workspace_rule({ workspace = "8", monitor = "desc:Acer Technologies KG271 TF5EE0048511" })
