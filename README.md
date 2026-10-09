@@ -15,6 +15,7 @@ Arch Linux + Hyprland rice. Catppuccin Mocha base, near-black panels, blue accen
 | `config/hyprmoncfg` | Monitor profiles |
 | `config/gtk-3.0` | GTK bits |
 | `config/starship.toml` | Prompt |
+| `system/logind.conf.d` | logind drop-in so the hardware power button opens the power menu instead of shutting down |
 | `bin/` | `hypr-*` helper scripts (app manager, power menu, wallpaper picker, screenshot, screenshot OCR, waybar toggle, dim ramp) and `hypr-bg-carousel` (GTK4 wallpaper carousel) |
 
 ## Install
@@ -24,7 +25,7 @@ git clone <repo> ~/Projects/Helicon
 ~/Projects/Helicon/install.sh
 ```
 
-`install.sh` symlinks `config/*` into `~/.config/` and `bin/*` into `~/.local/bin/`, moving anything already there to `*.helicon-bak`.
+`install.sh` symlinks `config/*` into `~/.config/` and `bin/*` into `~/.local/bin/`, moving anything already there to `*.helicon-bak`. It also installs the logind drop-in to `/etc/systemd/logind.conf.d/` (needs sudo).
 
 ## Palette
 
@@ -57,7 +58,7 @@ git clone <repo> ~/Projects/Helicon
 | `SUPER + CTRL + Print` | Region screenshot to satty |
 | `SUPER + CTRL + SHIFT + Print` | Screenshot OCR |
 
-Power menu: `SUPER + ALT + Space`, the waybar power icon, or `hypr-power-menu`.
+Power menu: `SUPER + ALT + Space`, the hardware power button, the waybar power icon, or `hypr-power-menu`.
 
 ## Dependencies
 

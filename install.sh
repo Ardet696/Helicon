@@ -29,5 +29,12 @@ for entry in "$REPO"/bin/*; do
 	link "$entry" "$BIN_HOME/$(basename "$entry")"
 done
 
+LOGIND_DROPIN=/etc/systemd/logind.conf.d/10-helicon-powerkey.conf
+if ! cmp -s "$REPO/system/logind.conf.d/10-helicon-powerkey.conf" "$LOGIND_DROPIN"; then
+	sudo install -Dm644 "$REPO/system/logind.conf.d/10-helicon-powerkey.conf" "$LOGIND_DROPIN"
+	sudo systemctl kill -s HUP systemd-logind
+	echo "installed $LOGIND_DROPIN"
+fi
+
 echo
 echo "Done. Reload with: pkill -SIGUSR2 waybar; makoctl reload; hyprctl reload"
