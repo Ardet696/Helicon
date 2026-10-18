@@ -20,7 +20,9 @@
 
 		"custom/left#bg-1",
 		"hyprland/workspaces",
-		"custom/right#bg-1"
+		"custom/right#bg-1",
+
+		"custom/claude"
 	],
 
 	"modules-center": [

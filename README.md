@@ -7,7 +7,7 @@ Arch Linux + Hyprland rice. Catppuccin Mocha base, near-black panels, blue accen
 | Path | What it is |
 | --- | --- |
 | `config/hypr` | Hyprland (`hyprland.lua`), `hypridle.conf`, `hyprlock.conf`, monitor layout |
-| `config/waybar` | Mechabar fork: workspaces module removed, power button wired to the wofi menu |
+| `config/waybar` | Mechabar fork: workspaces module removed, power button wired to the wofi menu, `custom/claude` Claude Code session monitor |
 | `config/wofi` | Shared menu theme (`config` + `style.css`) and the compact power menu (`power.conf` + `power.css`) |
 | `config/kitty` | Terminal + theme |
 | `config/mako` | Notifications |
@@ -15,17 +15,18 @@ Arch Linux + Hyprland rice. Catppuccin Mocha base, near-black panels, blue accen
 | `config/hyprmoncfg` | Monitor profiles |
 | `config/gtk-3.0` | GTK bits |
 | `config/starship.toml` | Prompt |
+| `extern/claude-waybar` | Submodule: [claude-waybar](https://github.com/Ardet696/claude-waybar), the Claude Code session monitor behind `custom/claude` |
 | `system/logind.conf.d` | logind drop-in so the hardware power button opens the power menu instead of shutting down |
 | `bin/` | `hypr-*` helper scripts (app manager, power menu, wallpaper picker, screenshot, screenshot OCR, waybar toggle, dim ramp) and `hypr-bg-carousel` (GTK4 wallpaper carousel) |
 
 ## Install
 
 ```bash
-git clone <repo> ~/Projects/Helicon
+git clone --recurse-submodules <repo> ~/Projects/Helicon
 ~/Projects/Helicon/install.sh
 ```
 
-`install.sh` symlinks `config/*` into `~/.config/` and `bin/*` into `~/.local/bin/`, moving anything already there to `*.helicon-bak`. It also installs the logind drop-in to `/etc/systemd/logind.conf.d/` (needs sudo).
+`install.sh` symlinks `config/*` into `~/.config/` and `bin/*` into `~/.local/bin/`, moving anything already there to `*.helicon-bak`. It runs the claude-waybar installer (links its scripts into `~/.local/bin`, registers its hooks and statusLine in `~/.claude/settings.json`). It also installs the logind drop-in to `/etc/systemd/logind.conf.d/` (needs sudo).
 
 ## Palette
 
@@ -62,7 +63,7 @@ Power menu: `SUPER + ALT + Space`, the hardware power button, the waybar power i
 
 ## Dependencies
 
-`hyprland hyprlock hypridle waybar wofi kitty mako btop starship grim slurp satty hyprpicker jq wl-clipboard swaybg python-gobject gtk4` plus a Nerd Font (`CommitMono Nerd Font`).
+`hyprland hyprlock hypridle waybar wofi kitty mako btop starship grim slurp satty hyprpicker jq wl-clipboard swaybg python-gobject gtk4 gtk4-layer-shell` plus a Nerd Font (`CommitMono Nerd Font`).
 
 ## Credit
 

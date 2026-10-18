@@ -74,6 +74,20 @@ tooltip label {
 	padding: 0 12px;
 }
 
+#custom-claude {
+	font-weight: normal;
+	padding: 0 12px;
+}
+#custom-claude.running {
+	color: @yellow;
+}
+#custom-claude.waiting {
+	color: @mauve;
+}
+#custom-claude.idle {
+	color: @blue;
+}
+
 /* Center modules */
 
 #keyboard-state label,

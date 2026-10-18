@@ -1,0 +1,3 @@
+[submodule "extern/claude-waybar"]
+	path = extern/claude-waybar
+	url = https://github.com/Ardet696/claude-waybar.git

@@ -29,6 +29,9 @@ for entry in "$REPO"/bin/*; do
 	link "$entry" "$BIN_HOME/$(basename "$entry")"
 done
 
+git -C "$REPO" submodule update --init
+"$REPO/extern/claude-waybar/install.sh"
+
 LOGIND_DROPIN=/etc/systemd/logind.conf.d/10-helicon-powerkey.conf
 if ! cmp -s "$REPO/system/logind.conf.d/10-helicon-powerkey.conf" "$LOGIND_DROPIN"; then
 	sudo install -Dm644 "$REPO/system/logind.conf.d/10-helicon-powerkey.conf" "$LOGIND_DROPIN"
