@@ -1,0 +1,144 @@
+#!/usr/bin/env python3
+"""Record a live cbonsai growth and dump pango-markup frames for hyprlock."""
+import fcntl, os, pty, re, select, shutil, struct, subprocess, sys, termios, time
+from pathlib import Path
+
+OUT = Path.home() / ".cache/hypr-bonsai"
+COLS, ROWS = 60, 26
+FRAMES = 90
+COLORS = {32: "#a6e3a1", 92: "#94e2d5", 33: "#9a6b45", 93: "#d9a566"}
+CSI = re.compile(r"\x1b\[([?0-9;]*)([A-Za-z])|\x1b\([A-Z0-9]|\x1b[=>]")
+
+
+def record():
+    master, slave = os.openpty()
+    fcntl.ioctl(slave, termios.TIOCSWINSZ, struct.pack("HHHH", ROWS, COLS, 0, 0))
+    env = dict(os.environ, TERM="xterm-256color", LINES=str(ROWS), COLUMNS=str(COLS))
+    p = subprocess.Popen(["cbonsai", "-l", "-t", "0.004", "-b", "1"],
+                         stdin=slave, stdout=slave, stderr=slave, env=env, close_fds=True)
+    os.close(slave)
+    data, last = b"", time.time()
+    while True:
+        r, _, _ = select.select([master], [], [], 0.3)
+        if r:
+            try:
+                chunk = os.read(master, 65536)
+            except OSError:
+                break
+            if not chunk:
+                break
+            data += chunk
+            last = time.time()
+        elif time.time() - last > 0.6:
+            break
+    p.kill()
+    p.wait()
+    os.close(master)
+    return data.decode("utf-8", "replace")
+
+
+def snapshots(text):
+    grid = [[(" ", None)] * COLS for _ in range(ROWS)]
+    r = c = 0
+    fg = None
+    snaps, i, n = [], 0, len(text)
+    writes = 0
+    while i < n:
+        ch = text[i]
+        if ch == "\x1b":
+            m = CSI.match(text, i)
+            if not m:
+                i += 1
+                continue
+            i = m.end()
+            if not m.group(2):
+                continue
+            a = [int(x) if x else 0 for x in m.group(1).lstrip("?").split(";")] if m.group(1) else []
+            k = m.group(2)
+            if k == "H":
+                r, c = (a[0] - 1 if a else 0), (a[1] - 1 if len(a) > 1 else 0)
+            elif k == "G":
+                c = (a[0] if a else 1) - 1
+            elif k == "d":
+                r = (a[0] if a else 1) - 1
+            elif k == "C":
+                c += a[0] if a else 1
+            elif k == "A":
+                r = max(0, r - (a[0] if a and a[0] else 1))
+            elif k == "B":
+                r = min(ROWS - 1, r + (a[0] if a and a[0] else 1))
+            elif k == "D":
+                c = max(0, c - (a[0] if a and a[0] else 1))
+            elif k == "J" and a[:1] in ([], [2]):
+                grid = [[(" ", None)] * COLS for _ in range(ROWS)]
+            elif k == "K":
+                for x in range(c, COLS):
+                    grid[r][x] = (" ", None)
+            elif k == "X":
+                for x in range(c, min(COLS, c + (a[0] if a else 1))):
+                    grid[r][x] = (" ", None)
+            elif k == "m":
+                for v in a or [0]:
+                    if v in (0, 39):
+                        fg = None
+                    elif v in COLORS:
+                        fg = COLORS[v]
+            continue
+        i += 1
+        if ch == "\r":
+            c = 0
+        elif ch == "\x08":
+            c = max(0, c - 1)
+        elif ch == "\n":
+            r = min(r + 1, ROWS - 1)
+        elif ch >= " " and 0 <= r < ROWS and 0 <= c < COLS:
+            grid[r][c] = (ch, fg)
+            c += 1
+            writes += 1
+            if writes % 6 == 0:
+                snaps.append([row[:] for row in grid])
+    snaps.append([row[:] for row in grid])
+    return snaps
+
+
+def render(grid, box):
+    r0, r1, c0, c1 = box
+    lines = []
+    for row in grid[r0:r1 + 1]:
+        out, cur, buf = [], None, ""
+        for ch, fg in row[c0:c1 + 1]:
+            if ch == " ":
+                fg = None
+            if fg != cur:
+                if buf:
+                    out.append(f'<span foreground="{cur}">{buf}</span>' if cur else buf)
+                cur, buf = fg, ""
+            buf += {"&": "&amp;", "<": "&lt;", ">": "&gt;"}.get(ch, ch)
+        if buf:
+            out.append(f'<span foreground="{cur}">{buf}</span>' if cur else buf)
+        lines.append("".join(out))
+    return "\n".join(lines)
+
+
+def main():
+    snaps = snapshots(record())
+    final = snaps[-1]
+    rows = [y for y, row in enumerate(final) if any(ch != " " for ch, _ in row)]
+    cols = [x for row in final for x, (ch, _) in enumerate(row) if ch != " "]
+    if not rows:
+        sys.exit("cbonsai produced no output")
+    box = (min(rows), max(rows), min(cols), max(cols))
+    step = max(1, len(snaps) // FRAMES)
+    picked = snaps[::step]
+    if picked[-1] is not final:
+        picked.append(final)
+    tmp = OUT.with_name(OUT.name + ".new")
+    shutil.rmtree(tmp, ignore_errors=True)
+    tmp.mkdir(parents=True)
+    for idx, g in enumerate(picked):
+        (tmp / f"{idx:03d}").write_text(render(g, box))
+    shutil.rmtree(OUT, ignore_errors=True)
+    tmp.rename(OUT)
+
+
+main()

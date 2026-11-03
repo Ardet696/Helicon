@@ -1,0 +1,39 @@
+#!/usr/bin/env bash
+# hyprlock label command: prints bonsai frames once the lock has been up for DELAY seconds
+DELAY=${DELAY:-30}
+FPS_MS=${FPS_MS:-90}
+HOLD_MS=${HOLD_MS:-10000}
+DIR=$HOME/.cache/hypr-bonsai
+STATE=$HOME/.cache/hypr-bonsai.state
+
+pid=$(pidof hyprlock) || exit 0
+now=$(( $(date +%s%N) / 1000000 ))
+
+[ -r "$STATE" ] && read -r spid start regen < "$STATE"
+if [ "$spid" != "${pid%% *}" ]; then
+    spid=${pid%% *}; start=$now; regen=-1
+    echo "$spid $start $regen" > "$STATE"
+    setsid hypr-bonsai-gen >/dev/null 2>&1 &
+fi
+
+t=$(( now - start - DELAY * 1000 ))
+(( t < 0 )) && { echo " "; exit 0; }
+
+mapfile -t frames < <(ls "$DIR")
+n=${#frames[@]}
+(( n == 0 )) && { echo " "; exit 0; }
+grow=$(( n * FPS_MS ))
+period=$(( grow + HOLD_MS ))
+cycle=$(( t / period ))
+pos=$(( t % period ))
+
+if (( pos < grow )); then
+    idx=$(( pos / FPS_MS ))
+else
+    idx=$(( n - 1 ))
+    if (( regen != cycle )); then
+        echo "$spid $start $cycle" > "$STATE"
+        setsid hypr-bonsai-gen >/dev/null 2>&1 &
+    fi
+fi
+cat "$DIR/${frames[idx]}"

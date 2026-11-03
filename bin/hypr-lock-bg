@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+# hyprlock background reload_cmd: black once the bonsai phase starts
+DELAY=${DELAY:-30}
+WALL=$HOME/Pictures/Wallpapers/catppuccin-blue-eye.png
+BLACK=$HOME/.cache/hypr-black.png
+STATE=$HOME/.cache/hypr-bonsai.state
+
+[ -f "$BLACK" ] || base64 -d > "$BLACK" <<< 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAADElEQVR4nGNgYGAAAAAEAAH2FzhVAAAAAElFTkSuQmCC'
+
+pid=$(pidof hyprlock) || { echo "$WALL"; exit 0; }
+[ -r "$STATE" ] && read -r spid start _ < "$STATE"
+now=$(( $(date +%s%N) / 1000000 ))
+if [ "$spid" = "${pid%% *}" ] && (( now - start >= DELAY * 1000 )); then
+    echo "$BLACK"
+else
+    echo "$WALL"
+fi

@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+# usage: hypr-screensaver start|stop
+CLASS=hypr-screensaver
+ANIM=${HYPR_SCREENSAVER_CMD:-cbonsai -l -i -w 5 -t 0.05}
+
+case "$1" in
+start)
+    hyprctl clients -j | jq -e --arg c "$CLASS" 'any(.[]; .class==$c)' >/dev/null && exit 0
+    for m in $(hyprctl monitors -j | jq -r '.[].name'); do
+        hyprctl dispatch "hl.dsp.exec_cmd(\"kitty --class $CLASS -o confirm_os_window_close=0 -o mouse_hide_wait=0 -o background=#000000 -o font_size=14 sh -c '$ANIM'\", {monitor=\"$m\", fullscreen=true})" >/dev/null
+        sleep 0.4
+    done
+    ;;
+stop)
+    hyprctl clients -j | jq -r --arg c "$CLASS" '.[] | select(.class==$c) | .pid' | xargs -r kill
+    ;;
+esac

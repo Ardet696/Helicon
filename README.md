@@ -17,7 +17,16 @@ Arch Linux + Hyprland rice. Catppuccin Mocha base, near-black panels, blue accen
 | `config/starship.toml` | Prompt |
 | `extern/claude-waybar` | Submodule: [claude-waybar](https://github.com/Ardet696/claude-waybar), the Claude Code session monitor behind `custom/claude` |
 | `system/logind.conf.d` | logind drop-in so the hardware power button opens the power menu instead of shutting down |
-| `bin/` | `hypr-*` helper scripts (app manager, power menu, wallpaper picker, screenshot, screenshot OCR, waybar toggle, dim ramp) and `hypr-bg-carousel` (GTK4 wallpaper carousel) |
+| `bin/` | `hypr-*` helper scripts (app manager, power menu, wallpaper picker, screenshot, screenshot OCR, waybar toggle, dim ramp, screensaver, lock-screen bonsai) and `hypr-bg-carousel` (GTK4 wallpaper carousel) |
+
+## Idle and lock
+
+- 5 min: backlight dim ramp.
+- 10 min: `hypr-screensaver` opens a fullscreen kitty running `cbonsai` on every monitor; any input kills it.
+- 20 min: screensaver stops, session locks.
+- On the lock screen the wallpaper shows and the password field fades in on first keypress. After 30 s the background turns black and a growing `cbonsai` plays above the field (`hypr-lock-bonsai` prints pre-rendered pango frames from `hypr-bonsai-gen`, `hypr-lock-bg` swaps the background).
+
+Requires `cbonsai`, `jq`, `kitty`, `hypridle`, `hyprlock`.
 
 ## Install
 
