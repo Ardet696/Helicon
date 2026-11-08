@@ -81,6 +81,9 @@ tooltip label {
 #custom-claude.running {
 	color: @yellow;
 }
+#custom-claude.agents {
+	color: #94e2d5;
+}
 #custom-claude.waiting {
 	color: @mauve;
 }
